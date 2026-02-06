@@ -10,4 +10,13 @@ public class IdentityContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<User>()
+            .Property(u => u.Budget)
+            .HasPrecision(18, 2);
+    }
 }
