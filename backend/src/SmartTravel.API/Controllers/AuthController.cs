@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartTravel.Application.DTOs;
 using SmartTravel.Application.Interfaces;
@@ -18,21 +20,49 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register([FromBody] RegisterUserDto dto)
     {
-        // Placeholder
-        return Ok(new UserDto());
+        try
+        {
+            var user = await _userService.RegisterUserAsync(dto);
+            return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login([FromBody] LoginUserDto dto)
     {
-        // Placeholder
-        return Ok(new UserDto());
+        try
+        {
+            var user = await _userService.LoginUserAsync(dto);
+            return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            return Unauthorized(new { message = ex.Message });
+        }
     }
 
+    [Authorize]
     [HttpGet("profile")]
     public async Task<ActionResult<UserDto>> GetProfile()
     {
-        // Placeholder
-        return Ok(new UserDto());
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized();
+        }
+
+        try
+        {
+            var user = await _userService.GetUserProfileAsync(userId);
+            return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
     }
 }
