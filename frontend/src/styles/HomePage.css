@@ -1,0 +1,421 @@
+.homepage-container {
+  min-height: 100vh;
+  background-color: #fff;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.hero-section {
+  padding: 6rem 0 12rem; /* Vertical padding only */
+  width: 100%;
+  position: relative;
+  background-color: #fff;
+}
+
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 4rem; /* Match the gutter in Navbar and About */
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 650px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.hero-title {
+  font-size: 5.5rem;
+  
+  font-weight: 800;
+  color: #EF6C33; /* Figma Coral */
+  line-height: 1.1;
+  margin-bottom: 2rem;
+  letter-spacing: -1px;
+  text-align: left;
+}
+
+.hero-description {
+  font-size: 1.5rem;
+  color: #334155;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+  max-width: 550px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.cta-button {
+  background: #0F172A; /* Use Navy for the button to distinguish it from the Coral headline */
+  color: #fff;
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  background: #1E293B; /* Slightly lighter navy on hover */
+  box-shadow: 0 15px 30px rgba(15, 23, 42, 0.3);
+}
+
+.hero-image-container {
+  flex: 1.2;
+}
+
+.hero-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 24px;
+}
+
+.bottom-wave {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  background-color: #fff;
+  clip-path: polygon(0 40%, 100% 0%, 100% 100%, 0% 100%); /* Simple wedge for now, can refine with SVG */
+  display: none; /* Removing old wave */
+}
+
+/* About Section */
+.about-section {
+  padding: 8rem 0;
+  background-color: #fff;
+}
+
+.about-container {
+  display: flex;
+  align-items: center;
+  gap: 6rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+
+.about-content {
+  flex: 1;
+}
+
+.section-title-navy {
+  font-size: 3.5rem;
+  color: #0F172A;
+  margin-bottom: 2rem;
+  font-weight: 800;
+}
+
+.about-description {
+  font-size: 1.125rem;
+  color: #475569;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.about-image-container {
+  flex: 1;
+}
+
+.about-image {
+  width: 100%;
+  border-radius: 32px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* Destinations Section */
+.destinations-section {
+  position: relative;
+  background-color: #0F172A; /* Dark Navy */
+  padding: 12rem 0 8rem;
+  color: #fff;
+}
+
+.destinations-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+
+.wave-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background-color: #fff;
+  clip-path: ellipse(70% 100% at 50% 0%);
+}
+
+.section-title-white {
+  font-size: 3.5rem;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 4rem;
+  font-weight: 800;
+}
+
+.destinations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.destination-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.destination-card:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dest-card-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.dest-card-content {
+  padding: 1.5rem;
+}
+
+.dest-card-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.dest-card-count {
+  color: #CBD5E1;
+  font-size: 1rem;
+}
+
+/* Newsletter Section */
+.newsletter-section {
+  padding: 8rem 0;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  padding: 8rem 4rem;
+}
+
+.newsletter-container {
+  background: #0F172A;
+  padding: 4rem 6rem;
+  border-radius: 40px;
+  text-align: center;
+  max-width: 1000px;
+  width: 100%;
+  color: #fff;
+}
+
+.newsletter-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 800;
+}
+
+.newsletter-subtitle {
+  font-size: 1.125rem;
+  color: #94A3B8;
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.newsletter-input {
+  flex: 1;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  border: none;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.newsletter-button {
+  background: #EF6C33;
+  color: #fff;
+  padding: 1rem 3rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Footer */
+.footer {
+  background-color: #0F172A;
+  color: #fff;
+  padding: 8rem 0 4rem;
+  position: relative;
+}
+
+.footer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+
+.wave-footer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background-color: #fff;
+  clip-path: ellipse(70% 100% at 50% 0%);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
+  gap: 4rem;
+  max-width: 1400px;
+  margin: 0 auto 4rem;
+}
+
+.footer-logo {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+}
+
+.footer-about {
+  color: #94A3B8;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.footer-heading {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 1rem;
+}
+
+.footer-links a {
+  color: #94A3B8;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #EF6C33;
+}
+
+.footer-contact {
+  color: #94A3B8;
+  margin-bottom: 1rem;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #64748B;
+}
+
+@media (max-width: 1200px) {
+  .hero-section, .about-section, .destinations-section, .newsletter-section, .footer {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+    padding: 4rem 2rem 6rem;
+  }
+  
+  .hero-content {
+    margin: 0 auto;
+  }
+  
+  .hero-title {
+    font-size: 3.5rem;
+  }
+  
+  .hero-description {
+    margin: 0 auto 2.5rem;
+  }
+
+  .about-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
