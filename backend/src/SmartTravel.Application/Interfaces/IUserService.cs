@@ -9,4 +9,6 @@ public interface IUserService
     Task<UserDto> GetUserProfileAsync(Guid userId);
     Task<EmailVerificationResponseDto> SendVerificationCodeAsync(EmailVerificationRequestDto dto);
     Task<EmailVerificationResponseDto> VerifyEmailAsync(EmailVerificationConfirmDto dto);
+    Task<ResetPasswordResponseDto> ForgotPasswordAsync(ForgotPasswordRequestDto dto);
+    Task<ResetPasswordResponseDto> ResetPasswordAsync(ResetPasswordRequestDto dto);
 }

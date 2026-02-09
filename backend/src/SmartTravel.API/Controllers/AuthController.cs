@@ -45,6 +45,34 @@ public class AuthController : ControllerBase
         }
     }
 
+    [HttpPost("forgot-password")]
+    public async Task<ActionResult<ResetPasswordResponseDto>> ForgotPassword([FromBody] ForgotPasswordRequestDto dto)
+    {
+        try
+        {
+            var result = await _userService.ForgotPasswordAsync(dto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<ActionResult<ResetPasswordResponseDto>> ResetPassword([FromBody] ResetPasswordRequestDto dto)
+    {
+        try
+        {
+            var result = await _userService.ResetPasswordAsync(dto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register([FromBody] RegisterUserDto dto)
     {
@@ -77,7 +105,7 @@ public class AuthController : ControllerBase
     [HttpGet("profile")]
     public async Task<ActionResult<UserDto>> GetProfile()
     {
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
         {
             return Unauthorized();

@@ -87,6 +87,89 @@ public class UserService : IUserService
         };
     }
 
+    public async Task<ResetPasswordResponseDto> ForgotPasswordAsync(ForgotPasswordRequestDto dto)
+    {
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == dto.Email.ToLowerInvariant());
+
+        if (user == null)
+        {
+            return new ResetPasswordResponseDto
+            {
+                Success = true,
+                Message = "If an account with this email exists, a password reset code has been sent."
+            };
+        }
+
+        var code = new Random().Next(100000, 999999).ToString();
+
+        var passwordReset = new PasswordReset
+        {
+            Email = dto.Email.ToLowerInvariant(),
+            ResetCode = code,
+            ExpiresAt = DateTime.UtcNow.AddMinutes(15)
+        };
+
+        _context.PasswordResets.Add(passwordReset);
+        await _context.SaveChangesAsync();
+
+        await _emailService.SendVerificationCodeAsync(dto.Email, code);
+
+        return new ResetPasswordResponseDto
+        {
+            Success = true,
+            Message = "Password reset code sent to your email."
+        };
+    }
+
+    public async Task<ResetPasswordResponseDto> ResetPasswordAsync(ResetPasswordRequestDto dto)
+    {
+        var reset = await _context.PasswordResets
+            .Where(pr => pr.Email == dto.Email.ToLowerInvariant() && !pr.IsUsed)
+            .FirstOrDefaultAsync();
+
+        if (reset == null || reset.ExpiresAt <= DateTime.UtcNow)
+        {
+            return new ResetPasswordResponseDto
+            {
+                Success = false,
+                Message = "Invalid or expired reset code."
+            };
+        }
+
+        if (reset.ResetCode != dto.Code)
+        {
+            return new ResetPasswordResponseDto
+            {
+                Success = false,
+                Message = "Invalid reset code."
+            };
+        }
+
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == dto.Email.ToLowerInvariant());
+
+        if (user == null)
+        {
+            return new ResetPasswordResponseDto
+            {
+                Success = false,
+                Message = "User not found."
+            };
+        }
+
+        user.PasswordHash = _passwordHasher.HashPassword(user, dto.NewPassword);
+        reset.IsUsed = true;
+
+        await _context.SaveChangesAsync();
+
+        return new ResetPasswordResponseDto
+        {
+            Success = true,
+            Message = "Password reset successfully."
+        };
+    }
+
     public async Task<UserDto> RegisterUserAsync(RegisterUserDto dto)
     {
         var verification = await _context.EmailVerifications
