@@ -107,7 +107,7 @@
   padding: 0.8rem; /* Reduced padding */
   border: none;
   border-radius: 10px;
-  background: linear-gradient(135deg, #EE6C4D 0%, #F7931E 100%);
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
   color: white;
   font-size: 1rem; /* Reduced font size */
   font-weight: 600;
@@ -120,7 +120,7 @@
 .auth-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(238, 108, 77, 0.4);
-  background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+  background: linear-gradient(135deg, #1E293B 0%, #334155 100%);
 }
 
 .auth-btn:disabled {

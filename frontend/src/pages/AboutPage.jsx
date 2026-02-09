@@ -39,15 +39,15 @@ const AboutPage = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="hero-section">
-        <h1 className="hero-title">About Smart Travel</h1>
-        <p className="hero-subtitle">
+      <section className="hero-section" style={{ padding: '3rem 1rem 0', marginBottom: '0' }}>
+        <h1 className="hero-title" style={{ color: '#EE6C4D', marginBottom: '0.5rem' }}>About Wanderlust</h1>
+        <p className="hero-subtitle" style={{ marginBottom: '0', color: '#334155' }}>
           We're on a mission to make travel planning effortless and personalized
         </p>
       </section>
 
       {/* Mission Section */}
-      <section style={{ marginBottom: '3rem' }}>
+      <section style={{ marginBottom: '2rem' }}>
         <div style={{ 
           background: '#fff',
           padding: '3rem',

@@ -20,7 +20,7 @@ const HomePage = () => {
               Assistance
             </h1>
             <p className="hero-description">
-              SmartTravel helps you plan trips based on your budget, interests, and time, 
+              Wanderlust helps you plan trips based on your budget, interests, and time, 
               using intelligent recommendations — before you even sign up.
             </p>
             <button className="cta-button" onClick={() => window.scrollTo({ top: 800, behavior: 'smooth' })}>

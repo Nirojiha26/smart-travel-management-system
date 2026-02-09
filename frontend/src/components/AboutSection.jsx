@@ -7,7 +7,7 @@ const AboutSection = () => {
         <div className="about-content">
           <h2 className="section-title-navy">About Us</h2>
           <p className="about-description">
-            SmartTravel is your ultimate companion for exploring the world. Our AI-driven platform 
+            Wanderlust is your ultimate companion for exploring the world. Our AI-driven platform 
             analyzes your preferences, budget, and travel history to curate personalized itineraries 
             that make every trip unforgettable. We believe in making travel planning seamless, 
             intelligent, and accessible to everyone.

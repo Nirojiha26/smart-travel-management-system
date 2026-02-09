@@ -1,11 +1,11 @@
 :root {
-  --primary-color: #EE6C4D;
-  --secondary-color: #293241;
-  --accent-color: #F7931E;
-  --text-dark: #293241;
+  --primary-color: #0F172A; /* Navy */
+  --secondary-color: #1E293B; /* Lighter Navy */
+  --accent-color: #38BDF8; /* Sky Blue */
+  --text-dark: #0F172A;
   --text-light: #FFFFFF;
-  --background-light: #F8F9FA;
-  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --background-light: #F8FAFC; /* Slightly blue-tinted white */
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .dashboard-container {

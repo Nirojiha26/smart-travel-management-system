@@ -29,7 +29,7 @@ const DashboardLayout = ({ children }) => {
       {/* Sidebar */}
       <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-          <div className="sidebar-logo">✈️ Smart Travel</div>
+          <div className="sidebar-logo">✈️ Wanderlust</div>
         </div>
         <nav className="sidebar-nav">
           {navItems.map((item) => (
