@@ -45,6 +45,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddDbContext<IdentityContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<IEmailService, SmtplEmailService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
@@ -56,7 +57,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartTravel API V1");
-        c.RoutePrefix = "swagger"; // Swagger available at /swagger
+        c.RoutePrefix = "swagger";
     });
 }
 

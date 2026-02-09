@@ -2,7 +2,19 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5050/api/auth/';
 
-// Register user
+// Send verification code
+const sendVerificationCode = async (email) => {
+  const response = await axios.post(API_URL + 'send-verification', { email });
+  return response.data;
+};
+
+// Verify email with code
+const verifyEmail = async (email, code) => {
+  const response = await axios.post(API_URL + 'verify-email', { email, code });
+  return response.data;
+};
+
+// Register user (after email verification)
 const register = async (userData) => {
   const response = await axios.post(API_URL + 'register', userData);
 
@@ -30,6 +42,8 @@ const logout = () => {
 };
 
 const authService = {
+  sendVerificationCode,
+  verifyEmail,
   register,
   logout,
   login,

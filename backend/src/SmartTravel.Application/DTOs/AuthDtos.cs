@@ -25,3 +25,20 @@ public class LoginUserDto
     public string Email { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
 }
+
+public class EmailVerificationRequestDto
+{
+    public string Email { get; set; } = string.Empty;
+}
+
+public class EmailVerificationConfirmDto
+{
+    public string Email { get; set; } = string.Empty;
+    public string Code { get; set; } = string.Empty;
+}
+
+public class EmailVerificationResponseDto
+{
+    public bool Success { get; set; }
+    public string Message { get; set; } = string.Empty;
+}

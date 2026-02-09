@@ -17,27 +17,99 @@ public class UserService : IUserService
     private readonly IdentityContext _context;
     private readonly IConfiguration _configuration;
     private readonly PasswordHasher<User> _passwordHasher;
+    private readonly IEmailService _emailService;
 
-    public UserService(IdentityContext context, IConfiguration configuration)
+    public UserService(
+        IdentityContext context, 
+        IConfiguration configuration,
+        IEmailService emailService)
     {
         _context = context;
         _configuration = configuration;
+        _emailService = emailService;
         _passwordHasher = new PasswordHasher<User>();
+    }
+
+    public async Task<EmailVerificationResponseDto> SendVerificationCodeAsync(EmailVerificationRequestDto dto)
+    {
+        var code = new Random().Next(100000, 999999).ToString();
+
+        var emailVerification = new EmailVerification
+        {
+            Email = dto.Email.ToLowerInvariant(),
+            VerificationCode = code,
+            ExpiresAt = DateTime.UtcNow.AddMinutes(15)
+        };
+
+        _context.EmailVerifications.Add(emailVerification);
+        await _context.SaveChangesAsync();
+
+        await _emailService.SendVerificationCodeAsync(dto.Email, code);
+
+        return new EmailVerificationResponseDto
+        {
+            Success = true,
+            Message = "Verification code sent to your email."
+        };
+    }
+
+    public async Task<EmailVerificationResponseDto> VerifyEmailAsync(EmailVerificationConfirmDto dto)
+    {
+        var verification = await _context.EmailVerifications
+            .Where(ev => ev.Email == dto.Email.ToLowerInvariant() && !ev.IsUsed)
+            .FirstOrDefaultAsync();
+
+        if (verification == null || verification.ExpiresAt <= DateTime.UtcNow)
+        {
+            return new EmailVerificationResponseDto
+            {
+                Success = false,
+                Message = "Invalid or expired verification code."
+            };
+        }
+
+        if (verification.VerificationCode != dto.Code)
+        {
+            return new EmailVerificationResponseDto
+            {
+                Success = false,
+                Message = "Invalid verification code."
+            };
+        }
+
+        verification.IsUsed = true;
+        await _context.SaveChangesAsync();
+
+        return new EmailVerificationResponseDto
+        {
+            Success = true,
+            Message = "Email verified successfully."
+        };
     }
 
     public async Task<UserDto> RegisterUserAsync(RegisterUserDto dto)
     {
-        if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
+        var verification = await _context.EmailVerifications
+            .Where(ev => ev.Email == dto.Email.ToLowerInvariant() && ev.IsUsed)
+            .FirstOrDefaultAsync();
+
+        if (verification == null)
         {
-            throw new Exception("User with this email already exists.");
+            throw new Exception("Please verify your email first.");
+        }
+
+        if (await _context.Users.AnyAsync(u => u.Email == dto.Email.ToLowerInvariant()))
+        {
+            throw new Exception("This email is already registered.");
         }
 
         var user = new User
         {
             Id = Guid.NewGuid(),
-            Name = dto.Name,
-            Email = dto.Email,
-            Role = Domain.Enums.Role.User // Default role
+            Name = dto.Name.Trim(),
+            Email = dto.Email.ToLowerInvariant(),
+            Role = Domain.Enums.Role.User,
+            IsEmailVerified = true
         };
 
         user.PasswordHash = _passwordHasher.HashPassword(user, dto.Password);
@@ -54,16 +126,18 @@ public class UserService : IUserService
 
     public async Task<UserDto> LoginUserAsync(LoginUserDto dto)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == dto.Email.ToLowerInvariant());
+
         if (user == null)
         {
-            throw new Exception("Invalid credentials.");
+            throw new Exception("Invalid email or password.");
         }
 
         var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
         if (result == PasswordVerificationResult.Failed)
         {
-            throw new Exception("Invalid credentials.");
+            throw new Exception("Invalid email or password.");
         }
 
         var token = GenerateJwtToken(user);

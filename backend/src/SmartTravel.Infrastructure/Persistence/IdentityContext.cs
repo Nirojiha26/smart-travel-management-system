@@ -10,6 +10,7 @@ public class IdentityContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<EmailVerification> EmailVerifications { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -18,5 +19,9 @@ public class IdentityContext : DbContext
         modelBuilder.Entity<User>()
             .Property(u => u.Budget)
             .HasPrecision(18, 2);
+
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
     }
 }

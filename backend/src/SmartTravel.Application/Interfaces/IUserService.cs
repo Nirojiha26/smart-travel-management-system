@@ -7,4 +7,6 @@ public interface IUserService
     Task<UserDto> RegisterUserAsync(RegisterUserDto dto);
     Task<UserDto> LoginUserAsync(LoginUserDto dto);
     Task<UserDto> GetUserProfileAsync(Guid userId);
+    Task<EmailVerificationResponseDto> SendVerificationCodeAsync(EmailVerificationRequestDto dto);
+    Task<EmailVerificationResponseDto> VerifyEmailAsync(EmailVerificationConfirmDto dto);
 }

@@ -17,6 +17,34 @@ public class AuthController : ControllerBase
         _userService = userService;
     }
 
+    [HttpPost("send-verification")]
+    public async Task<ActionResult<EmailVerificationResponseDto>> SendVerificationCode([FromBody] EmailVerificationRequestDto dto)
+    {
+        try
+        {
+            var result = await _userService.SendVerificationCodeAsync(dto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpPost("verify-email")]
+    public async Task<ActionResult<EmailVerificationResponseDto>> VerifyEmail([FromBody] EmailVerificationConfirmDto dto)
+    {
+        try
+        {
+            var result = await _userService.VerifyEmailAsync(dto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register([FromBody] RegisterUserDto dto)
     {

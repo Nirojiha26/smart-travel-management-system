@@ -11,4 +11,5 @@ public class User
     public Role Role { get; set; } = Role.User;
     public decimal Budget { get; set; }
     public string[] Interests { get; set; } = Array.Empty<string>();
+    public bool IsEmailVerified { get; set; } = false;
 }
