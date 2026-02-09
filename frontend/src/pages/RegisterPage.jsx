@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import authService from '../services/authService'
+import AuthLayout from '../components/AuthLayout'
 
 const STEP_EMAIL = 'email'
 const STEP_VERIFICATION = 'verification'
@@ -94,7 +95,7 @@ function RegisterPage() {
       const userData = { name, email, password }
       const response = await authService.register(userData)
       toast.success('Registration successful!')
-      navigate('/')
+      navigate('/home')
     } catch (error) {
       toast.error('Registration failed')
     } finally {
@@ -103,153 +104,156 @@ function RegisterPage() {
   }
 
   const renderEmailStep = () => (
-    <>
-      <section className='heading'>
-        <h1>Verify Your Email</h1>
-        <p>Enter your email address to receive a verification code</p>
-      </section>
+    <AuthLayout 
+      title="Verify Your Email ID" 
+      subtitle="Before registration, please verify your email ID"
+    >
+      <form onSubmit={onEmailSubmit}>
+        <div className="auth-form-group">
+          <input
+            type="email"
+            className="auth-input"
+            id="email"
+            name="email"
+            value={email}
+            placeholder="Enter your email"
+            onChange={onChange}
+            required
+          />
+        </div>
 
-      <section className='form'>
-        <form onSubmit={onEmailSubmit}>
-          <div className='form-group'>
-            <input
-              type='email'
-              className='form-control'
-              id='email'
-              name='email'
-              value={email}
-              placeholder='Enter your email'
-              onChange={onChange}
-              required
-            />
-          </div>
+        <div className="auth-form-group">
+          <button type="submit" className="auth-btn" disabled={isLoading}>
+            {isLoading ? 'Sending...' : 'Send Verification Code'}
+          </button>
+        </div>
 
-          <div className='form-group'>
-            <button type='submit' className='btn btn-block' disabled={isLoading}>
-              {isLoading ? 'Sending...' : 'Send Verification Code'}
-            </button>
-          </div>
-        </form>
-      </section>
-    </>
+        <div className="auth-footer">
+          Already have an account?{' '}
+          <button 
+            type="button" 
+            className="auth-link-btn" 
+            style={{ fontWeight: 'bold' }}
+            onClick={() => navigate('/login')}
+            disabled={isLoading}
+          >
+            Login
+          </button>
+        </div>
+      </form>
+    </AuthLayout>
   )
 
   const renderVerificationStep = () => (
-    <>
-      <section className='heading'>
-        <h1>Enter Verification Code</h1>
-        <p>We've sent a 6-digit code to {email}</p>
-      </section>
+    <AuthLayout 
+      title="Enter Verification Code" 
+      subtitle={`We've sent a 6-digit code to ${email}`}
+    >
+      <form onSubmit={onVerificationSubmit}>
+        <div className="auth-form-group">
+          <input
+            type="text"
+            className="auth-input"
+            id="verificationCode"
+            name="verificationCode"
+            value={verificationCode}
+            placeholder="Enter 6-digit code"
+            onChange={onChange}
+            maxLength={6}
+            required
+            style={{ textAlign: 'center', letterSpacing: '0.5em', fontSize: '1.2rem' }}
+          />
+        </div>
 
-      <section className='form'>
-        <form onSubmit={onVerificationSubmit}>
-          <div className='form-group'>
-            <input
-              type='text'
-              className='form-control'
-              id='verificationCode'
-              name='verificationCode'
-              value={verificationCode}
-              placeholder='Enter 6-digit code'
-              onChange={onChange}
-              maxLength={6}
-              required
-            />
-          </div>
+        <div className="auth-form-group">
+          <button type="submit" className="auth-btn" disabled={isLoading}>
+            {isLoading ? 'Verifying...' : 'Verify Email'}
+          </button>
+        </div>
 
-          <div className='form-group'>
-            <button type='submit' className='btn btn-block' disabled={isLoading}>
-              {isLoading ? 'Verifying...' : 'Verify Email'}
-            </button>
-          </div>
-
-          <div className='form-group'>
-            <button 
-              type='button' 
-              className='btn btn-secondary btn-block' 
-              onClick={() => setCurrentStep(STEP_EMAIL)}
-              disabled={isLoading}
-            >
-              Back
-            </button>
-          </div>
-        </form>
-      </section>
-    </>
+        <div className="auth-footer">
+          <button 
+            type="button" 
+            className="auth-link-btn" 
+            onClick={() => setCurrentStep(STEP_EMAIL)}
+            disabled={isLoading}
+          >
+            Back
+          </button>
+        </div>
+      </form>
+    </AuthLayout>
   )
 
   const renderRegistrationStep = () => (
-    <>
-      <section className='heading'>
-        <h1>Create Your Account</h1>
-        <p>Email verified: {email}</p>
-      </section>
+    <AuthLayout 
+      title="Create Your Account" 
+      subtitle={`Email verified: ${email}`}
+    >
+      <form onSubmit={onRegistrationSubmit}>
+        <div className="auth-form-group">
+          <input
+            type="text"
+            className="auth-input"
+            id="name"
+            name="name"
+            value={name}
+            placeholder="Enter your name"
+            onChange={onChange}
+            required
+          />
+        </div>
 
-      <section className='form'>
-        <form onSubmit={onRegistrationSubmit}>
-          <div className='form-group'>
-            <input
-              type='text'
-              className='form-control'
-              id='name'
-              name='name'
-              value={name}
-              placeholder='Enter your name'
-              onChange={onChange}
-              required
-            />
-          </div>
+        <div className="auth-form-group">
+          <input
+            type="email"
+            className="auth-input"
+            id="email"
+            name="email"
+            value={email}
+            placeholder="Email (verified)"
+            readOnly
+            disabled
+            style={{ opacity: 0.7 }}
+          />
+        </div>
 
-          <div className='form-group'>
-            <input
-              type='email'
-              className='form-control'
-              id='email'
-              name='email'
-              value={email}
-              placeholder='Email (verified)'
-              readOnly
-              disabled
-            />
-          </div>
+        <div className="auth-form-group">
+          <input
+            type="password"
+            className="auth-input"
+            id="password"
+            name="password"
+            value={password}
+            placeholder="Enter password"
+            onChange={onChange}
+            required
+          />
+        </div>
 
-          <div className='form-group'>
-            <input
-              type='password'
-              className='form-control'
-              id='password'
-              name='password'
-              value={password}
-              placeholder='Enter password'
-              onChange={onChange}
-              required
-            />
-          </div>
+        <div className="auth-form-group">
+          <input
+            type="password"
+            className="auth-input"
+            id="confirmPassword"
+            name="confirmPassword"
+            value={confirmPassword}
+            placeholder="Confirm password"
+            onChange={onChange}
+            required
+          />
+        </div>
 
-          <div className='form-group'>
-            <input
-              type='password'
-              className='form-control'
-              id='confirmPassword'
-              name='confirmPassword'
-              value={confirmPassword}
-              placeholder='Confirm password'
-              onChange={onChange}
-              required
-            />
-          </div>
-
-          <div className='form-group'>
-            <button type='submit' className='btn btn-block' disabled={isLoading}>
-              {isLoading ? 'Creating Account...' : 'Create Account'}
-            </button>
-          </div>
-        </form>
-      </section>
-    </>
+        <div className="auth-form-group">
+          <button type="submit" className="auth-btn" disabled={isLoading}>
+            {isLoading ? 'Creating Account...' : 'Create Account'}
+          </button>
+        </div>
+      </form>
+    </AuthLayout>
   )
 
-  if (isLoading) {
+  if (isLoading && currentStep === 'loading_state') {
     return <div>Loading...</div>
   }
 

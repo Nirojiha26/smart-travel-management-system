@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { login, reset } from '../features/auth/authSlice'
-import authService from '../services/authService'
+import { login, reset } from '../store/authSlice'
+import AuthLayout from '../components/AuthLayout'
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ function LoginPage() {
 
   useEffect(() => {
     if (isSuccess || user) {
-      navigate('/')
+      navigate('/home')
     }
 
     if (isError) {
@@ -56,56 +56,73 @@ function LoginPage() {
   }
 
   return (
-    <>
-      <section className='heading'>
-        <h1>Login</h1>
-        <p>Login and start planning your trips</p>
-      </section>
+    <AuthLayout 
+      title="Login" 
+      subtitle="Login and start planning your trips"
+    >
+      <form onSubmit={onSubmit}>
+        <div className="auth-form-group">
+          <input
+            type="email"
+            className="auth-input"
+            id="email"
+            name="email"
+            value={email}
+            placeholder="Enter your email"
+            onChange={onChange}
+          />
+        </div>
+        <div className="auth-form-group">
+          <input
+            type="password"
+            className="auth-input"
+            id="password"
+            name="password"
+            value={password}
+            placeholder="Enter password"
+            onChange={onChange}
+          />
+        </div>
+        <div className="auth-form-group">
+          <button type="submit" className="auth-btn" disabled={isLoading}>
+            {isLoading ? 'Loading...' : 'Login'}
+          </button>
+        </div>
+        
+        <div className="auth-footer" style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <button 
+            type="button" 
+            className="auth-link-btn" 
+            onClick={() => navigate('/forgot-password')}
+            disabled={isLoading}
+          >
+            Forgot Password?
+          </button>
 
-      <section className='form'>
-        <form onSubmit={onSubmit}>
-          <div className='form-group'>
-            <input
-              type='email'
-              className='form-control'
-              id='email'
-              name='email'
-              value={email}
-              placeholder='Enter your email'
-              onChange={onChange}
-            />
-          </div>
-          <div className='form-group'>
-            <input
-              type='password'
-              className='form-control'
-              id='password'
-              name='password'
-              value={password}
-              placeholder='Enter password'
-              onChange={onChange}
-            />
-          </div>
+          <button 
+            type="button" 
+            className="auth-link-btn" 
+            onClick={() => navigate('/')}
+            disabled={isLoading}
+          >
+            Back to Home
+          </button>
+        </div>
 
-          <div className='form-group'>
-            <button type='submit' className='btn btn-block' disabled={isLoading}>
-              {isLoading ? 'Loading...' : 'Login'}
-            </button>
-          </div>
-          
-          <div className='form-group'>
-            <button 
-              type='button' 
-              className='btn btn-secondary btn-block' 
-              onClick={() => navigate('/forgot-password')}
-              disabled={isLoading}
-            >
-              Forgot Password?
-            </button>
-          </div>
-        </form>
-      </section>
-    </>
+        <div className="auth-footer" style={{ marginTop: '1.5rem' }}>
+          Don't have an account?{' '}
+          <button 
+            type="button" 
+            className="auth-link-btn" 
+            style={{ fontWeight: 'bold' }}
+            onClick={() => navigate('/register')}
+            disabled={isLoading}
+          >
+            Sign Up
+          </button>
+        </div>
+      </form>
+    </AuthLayout>
   )
 }
 

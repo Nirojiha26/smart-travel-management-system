@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import authService from '../services/authService'
+import AuthLayout from '../components/AuthLayout'
 
 const STEP_EMAIL = 'email'
 const STEP_RESET = 'reset'
@@ -80,129 +81,123 @@ function ForgotPasswordPage() {
   }
 
   const renderEmailStep = () => (
-    <>
-      <section className='heading'>
-        <h1>Forgot Password</h1>
-        <p>Enter your email address to receive a password reset code</p>
-      </section>
+    <AuthLayout 
+      title="Forgot Password" 
+      subtitle="Enter your email address to receive a password reset code"
+    >
+      <form onSubmit={onEmailSubmit}>
+        <div className="auth-form-group">
+          <input
+            type="email"
+            className="auth-input"
+            id="email"
+            name="email"
+            value={email}
+            placeholder="Enter your email"
+            onChange={onChange}
+            required
+          />
+        </div>
 
-      <section className='form'>
-        <form onSubmit={onEmailSubmit}>
-          <div className='form-group'>
-            <input
-              type='email'
-              className='form-control'
-              id='email'
-              name='email'
-              value={email}
-              placeholder='Enter your email'
-              onChange={onChange}
-              required
-            />
-          </div>
+        <div className="auth-form-group">
+          <button type="submit" className="auth-btn" disabled={isLoading}>
+            {isLoading ? 'Sending...' : 'Send Reset Code'}
+          </button>
+        </div>
 
-          <div className='form-group'>
-            <button type='submit' className='btn btn-block' disabled={isLoading}>
-              {isLoading ? 'Sending...' : 'Send Reset Code'}
-            </button>
-          </div>
-
-          <div className='form-group'>
-            <button 
-              type='button' 
-              className='btn btn-secondary btn-block' 
-              onClick={() => navigate('/login')}
-              disabled={isLoading}
-            >
-              Back to Login
-            </button>
-          </div>
-        </form>
-      </section>
-    </>
+        <div className="auth-footer">
+          <button 
+            type="button" 
+            className="auth-link-btn" 
+            onClick={() => navigate('/login')}
+            disabled={isLoading}
+          >
+            Back to Login
+          </button>
+        </div>
+      </form>
+    </AuthLayout>
   )
 
   const renderResetStep = () => (
-    <>
-      <section className='heading'>
-        <h1>Reset Password</h1>
-        <p>We've sent a 6-digit code to {email}</p>
-      </section>
+    <AuthLayout 
+      title="Reset Password" 
+      subtitle={`We've sent a 6-digit code to ${email}`}
+    >
+      <form onSubmit={onResetSubmit}>
+        <div className="auth-form-group">
+          <input
+            type="email"
+            className="auth-input"
+            id="email"
+            name="email"
+            value={email}
+            placeholder="Email"
+            readOnly
+            disabled
+            style={{ opacity: 0.7 }}
+          />
+        </div>
 
-      <section className='form'>
-        <form onSubmit={onResetSubmit}>
-          <div className='form-group'>
-            <input
-              type='email'
-              className='form-control'
-              id='email'
-              name='email'
-              value={email}
-              placeholder='Email'
-              readOnly
-              disabled
-            />
-          </div>
+        <div className="auth-form-group">
+          <input
+            type="text"
+            className="auth-input"
+            id="resetCode"
+            name="resetCode"
+            value={resetCode}
+            placeholder="Enter 6-digit reset code"
+            onChange={onChange}
+            maxLength={6}
+            required
+            style={{ textAlign: 'center', letterSpacing: '0.5em', fontSize: '1.2rem' }}
+          />
+        </div>
 
-          <div className='form-group'>
-            <input
-              type='text'
-              className='form-control'
-              id='resetCode'
-              name='resetCode'
-              value={resetCode}
-              placeholder='Enter 6-digit reset code'
-              onChange={onChange}
-              maxLength={6}
-              required
-            />
-          </div>
+        <div className="auth-form-group">
+          <input
+            type="password"
+            className="auth-input"
+            id="newPassword"
+            name="newPassword"
+            value={newPassword}
+            placeholder="Enter new password"
+            onChange={onChange}
+            required
+          />
+        </div>
 
-          <div className='form-group'>
-            <input
-              type='password'
-              className='form-control'
-              id='newPassword'
-              name='newPassword'
-              value={newPassword}
-              placeholder='Enter new password'
-              onChange={onChange}
-              required
-            />
-          </div>
+        <div className="auth-form-group">
+          <input
+            type="password"
+            className="auth-input"
+            id="confirmPassword"
+            name="confirmPassword"
+            value={confirmPassword}
+            placeholder="Confirm new password"
+            onChange={onChange}
+            required
+          />
+        </div>
 
-          <div className='form-group'>
-            <input
-              type='password'
-              className='form-control'
-              id='confirmPassword'
-              name='confirmPassword'
-              value={confirmPassword}
-              placeholder='Confirm new password'
-              onChange={onChange}
-              required
-            />
-          </div>
+        <div className="auth-form-group">
+          <button type="submit" className="auth-btn" disabled={isLoading}>
+            {isLoading ? 'Resetting...' : 'Reset Password'}
+          </button>
+        </div>
 
-          <div className='form-group'>
-            <button type='submit' className='btn btn-block' disabled={isLoading}>
-              {isLoading ? 'Resetting...' : 'Reset Password'}
-            </button>
-          </div>
-
-          <div className='form-group'>
-            <button 
-              type='button' 
-              className='btn btn-secondary btn-block' 
-              onClick={() => setCurrentStep(STEP_EMAIL)}
-              disabled={isLoading}
-            >
-              Back
-            </button>
-          </div>
-        </form>
-      </section>
-    </>
+        <div className="auth-footer">
+          <button 
+            type="button" 
+            className="auth-link-btn" 
+            onClick={() => setCurrentStep(STEP_EMAIL)}
+            disabled={isLoading}
+          >
+            Back
+          </button>
+        </div>
+      </form>
+    </AuthLayout>
   )
 
   if (isLoading && currentStep !== STEP_RESET) {
