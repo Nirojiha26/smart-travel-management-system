@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { login, reset } from '../store/authSlice'
+import { login, reset } from '../features/auth/authSlice'
+import authService from '../services/authService'
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -15,17 +16,17 @@ function LoginPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { user,isLoading, isError, isSuccess, message } = useSelector(
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   )
 
   useEffect(() => {
-    if (isError) {
-      toast.error(message)
-    }
-
     if (isSuccess || user) {
       navigate('/')
+    }
+
+    if (isError) {
+      toast.error(message)
     }
 
     dispatch(reset())
@@ -41,6 +42,11 @@ function LoginPage() {
   const onSubmit = (e) => {
     e.preventDefault()
 
+    if (!email || !password) {
+      toast.error('Please fill in all fields')
+      return
+    }
+
     const userData = {
       email,
       password,
@@ -49,15 +55,11 @@ function LoginPage() {
     dispatch(login(userData))
   }
 
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
-
   return (
     <>
       <section className='heading'>
         <h1>Login</h1>
-        <p>Login to start planning your trips</p>
+        <p>Login and start planning your trips</p>
       </section>
 
       <section className='form'>
@@ -86,8 +88,19 @@ function LoginPage() {
           </div>
 
           <div className='form-group'>
-            <button type='submit' className='btn btn-block'>
-              Submit
+            <button type='submit' className='btn btn-block' disabled={isLoading}>
+              {isLoading ? 'Loading...' : 'Login'}
+            </button>
+          </div>
+          
+          <div className='form-group'>
+            <button 
+              type='button' 
+              className='btn btn-secondary btn-block' 
+              onClick={() => navigate('/forgot-password')}
+              disabled={isLoading}
+            >
+              Forgot Password?
             </button>
           </div>
         </form>
