@@ -190,12 +190,12 @@
 .auth-footer {
   margin-top: 1.5rem;
   text-align: center;
-  color: rgba(255, 255, 255, 0.8);
+  color: hwb(234 4% 52% / 0.818);
   font-size: 0.9rem;
 }
 
 .auth-footer a, .auth-footer button {
-  color: #fff;
+  color: #ffffff;
   font-weight: 600;
   text-decoration: none;
   margin-left: 0.5rem;
